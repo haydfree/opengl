@@ -1,5 +1,5 @@
-#ifndef UTIL_H
-#define UTIL_H
+#ifndef DEFINES_H
+#define DEFINES_H
 
 #define GUARD_OOB(val, min, max)                do { if ((val) < (min) || (val) > (max)) { goto cleanup; } } while (0)
 #define GUARD_NULL(ptr)                         do { if (!(ptr)) { goto cleanup; } } while (0)
@@ -49,5 +49,7 @@ STATIC_ASSERT(sizeof(f64) == 8, "expected f64 to be 8 bytes\n");
 
 #define TRUE 1
 #define FALSE 0
+#define SUCCESS 0
+#define ERROR -1
 
 #endif

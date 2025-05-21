@@ -8,7 +8,7 @@ STFLAGS   	:= -std=c++17 -Wall -Wextra -Werror -Wpedantic
 CFLAGS   	:= ${CINCS} ${DBFLAGS} ${STFLAGS} 
 LFLAGS   	:= ${LINCS} ${DBFLAGS} ${STFLAGS} 
 
-SRCS		:= main.cpp util.cpp
+SRCS		:= main.cpp 
 OBJS  		:= ${SRCS:.cpp=.o}
 
 ${TARGET}: ${OBJS}
