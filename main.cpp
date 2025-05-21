@@ -1,3 +1,5 @@
+#include "util.h"
+
 #include <stdio.h>
 #define GLEW_NO_GLU
 #include <GL/glew.h>
@@ -8,7 +10,6 @@ int
 main(void)
 {
 	GLFWwindow *window = NULL;
-
 
 	glewExperimental = true;
 	if (!glfwInit())

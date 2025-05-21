@@ -1,22 +1,6 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#define CHECK_int8_t_BOUNDS(val)              	 ((val) >= INT8_MIN && (val) <= INT8_MAX)
-#define CHECK_uint8_t_BOUNDS(val)             	 ((val) >= 0 && (val) <= UINT8_MAX)
-#define CHECK_int16_t_BOUNDS(val)             	 ((val) >= INT16_MIN && (val) <= INT16_MAX)
-#define CHECK_uint16_t_BOUNDS(val)            	 ((val) >= 0 && (val) <= UINT16_MAX)
-#define CHECK_int32_t_BOUNDS(val)             	 ((val) >= INT32_MIN && (val) <= INT32_MAX)
-#define CHECK_uint32_t_BOUNDS(val)            	 ((val) >= 0 && (val) <= UINT32_MAX)
-#define CHECK_int64_t_BOUNDS(val)             	 ((val) >= INT64_MIN && (val) <= INT64_MAX)
-#define CHECK_uint64_t_BOUNDS(val)            	 ((val) >= 0 && (val) <= UINT64_MAX)
-#define CHECK_char_BOUNDS(val)                  ((val) >= CHAR_MIN && (val) <= CHAR_MAX)
-#define CHECK_short_BOUNDS(val)                 ((val) >= SHRT_MIN && (val) <= SHRT_MAX)
-#define CHECK_int_BOUNDS(val)                   ((val) >= INT_MIN && (val) <= INT_MAX)
-#define CHECK_long_BOUNDS(val)                  ((val) >= LONG_MIN && (val) <= LONG_MAX)
-#define CHECK_unsigned_BOUNDS(val)              ((val) >= 0 && (val) <= ULONG_MAX)
-#define CHECK_TYPE_BOUNDS(val, TYPE)            CHECK_##TYPE##_BOUNDS(val)
-#define SAFE_CAST(val, TYPE)                    (CHECK_TYPE_BOUNDS(val, TYPE) ? (TYPE)(val) : (TYPE)0)
-
 #define GUARD_OOB(val, min, max)                do { if ((val) < (min) || (val) > (max)) { goto cleanup; } } while (0)
 #define GUARD_NULL(ptr)                         do { if (!(ptr)) { goto cleanup; } } while (0)
 #define GUARD_TRUE(expr)                        do { if ((expr)) { goto cleanup; } } while (0)
@@ -32,9 +16,38 @@
 #define ZERO_MEM(ptr, size)						memset(ptr, 0, size)	
 #define FREE(ptr)								if ((ptr)) { free(ptr); ptr = NULL; }
 
-typedef u8 unsigned short; 
+typedef unsigned char u8; 
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef unsigned long long u64;
 
-int print_chars(const char * const str, const uint8_t len);
-int arrncpy(int8_t * const dst, const int8_t * const src, const uint8_t len);
+typedef signed char i8; 
+typedef signed short i16;
+typedef signed int i32;
+typedef signed long long i64;
+
+typedef float f32;
+typedef double f64;
+
+typedef int b32;
+typedef char b8;
+
+#define STATIC_ASSERT static_assert
+
+STATIC_ASSERT(sizeof(u8) == 1, "expected u8 to be 1 byte\n");
+STATIC_ASSERT(sizeof(u16) == 2, "expected u16 to be 2 bytes\n");
+STATIC_ASSERT(sizeof(u32) == 4, "expected u32 to be 4 bytes\n");
+STATIC_ASSERT(sizeof(u64) == 8, "expected u64 to be 8 bytes\n");
+
+STATIC_ASSERT(sizeof(i8) == 1, "expected i8 to be 1 byte\n");
+STATIC_ASSERT(sizeof(i16) == 2, "expected i16 to be 2 bytes\n");
+STATIC_ASSERT(sizeof(i32) == 4, "expected i32 to be 4 bytes\n");
+STATIC_ASSERT(sizeof(i64) == 8, "expected i64 to be 8 bytes\n");
+
+STATIC_ASSERT(sizeof(f32) == 4, "expected f32 to be 4 bytes\n");
+STATIC_ASSERT(sizeof(f64) == 8, "expected f64 to be 8 bytes\n");
+
+#define TRUE 1
+#define FALSE 0
 
 #endif
