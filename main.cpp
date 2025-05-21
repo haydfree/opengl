@@ -9,6 +9,7 @@ main(void)
 {
 	GLFWwindow *window = NULL;
 
+
 	glewExperimental = true;
 	if (!glfwInit())
 	{
