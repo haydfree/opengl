@@ -12,6 +12,8 @@
 #define GUARD_NON_NEG(val)                      do { if ((val) >= 0) { goto cleanup; } } while (0)
 #define GUARD_NON_ZERO(val)                     do { if ((val) != 0) { goto cleanup; } } while (0)
 #define GUARD_ERROR(expr)                       GUARD_TRUE(expr)
+#define GUARD_EQUAL(val1, val2)					do { if (val1 == val2) { goto cleanup; } } while (0)
+#define GUARD_NOT_EQUAL(val1, val2)				do { if (val1 != val2) { goto cleanup; } } while (0)
 
 #define ZERO_MEM(ptr, size)						memset(ptr, 0, size)	
 #define FREE(ptr)								if ((ptr)) { free(ptr); ptr = NULL; }
