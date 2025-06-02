@@ -1,41 +1,71 @@
-TARGET   	:= opengl
+# Target
+TARGET=				opengl
 
-CMP      	:= clang
-CINCS	 	:= -I. -I/usr/local/include
-LINCS    	:= -I. -L/usr/X11R6/lib -L/usr/local/lib -lGL -lGLEW -lglfw 
-DBFLAGS  	:= -g3 -O0 -DTESTING
-STFLAGS   	:= -std=c++17 -Wall -Wextra -Werror -Wpedantic
-CFLAGS   	:= ${CINCS} ${DBFLAGS} ${STFLAGS} 
-LFLAGS   	:= ${LINCS} ${DBFLAGS} ${STFLAGS} 
+# Compilers
+CC=					clang
+CXX=				clang++
 
-SRCS		:= main.cpp 
-OBJS  		:= ${SRCS:.cpp=.o}
+# Directories
+INCDIRS=			-I. -I./include -I/usr/X11R6/include -I/usr/local/include
+LIBDIRS=			-L/usr/X11R6/lib -L/usr/local/lib
+
+# Libraries
+LDLIBS=				-lGL -lGLEW -lglfw
+
+# Flags
+DEBUG=				-g3 -O0 -DTESTING
+C_WARN=				-Wall -Wextra -Werror -Wpedantic
+C_STD=				-std=c99
+CXX_STD=			-std=c++17
+
+# Combined flags
+CFLAGS=				${INCDIRS} ${DEBUG} ${C_WARN} ${C_STD}
+CXXFLAGS=			${INCDIRS} ${DEBUG} ${C_WARN} ${CXX_STD}
+LDFLAGS=			${LIBDIRS} ${DEBUG} ${LDLIBS}
+
+# Sources and Objects
+CSRCS=				src/glad.c
+CXXSRCS=			main.cpp
+COBJS=				${CSRCS:.c=.o}
+CXXOBJS=			${CXXSRCS:.cpp=.o}
+OBJS=				${COBJS} ${CXXOBJS}
+
+# Default target
+all: ${TARGET}
+	echo "all"
 
 ${TARGET}: ${OBJS}
-	@${CMP} ${OBJS} ${LFLAGS} -o ${TARGET}
+	echo "target"
+	${CXX} ${OBJS} ${LDFLAGS} -o ${TARGET}
+
+.SUFFIXES: .c .cpp .o
+
+.c.o:
+	echo ".c.o"
+	${CC} ${CFLAGS} -c $< -o $@
 
 .cpp.o:
-	@${CMP} ${CFLAGS} -c $< -o $@
+	echo ".cpp.o"
+	${CXX} ${CXXFLAGS} -c $< -o $@
 
 clean:
-	@rm -f ${OBJS} ${TARGET} *.core
+	echo "clean"
+	rm -f ${OBJS} ${TARGET} *.core
 
 run: ${TARGET}
-	@./${TARGET}
-
-all:
-	@clear; ${MAKE} clean; ${MAKE}; ${MAKE} run;
-
-commit:
-	@git add .
-	@git commit -m "AUTO COMMIT: `date +'%Y-%m-%d %H:%M:%S'`"
-	@git push origin main
+	echo "run"
+	./${TARGET}
 
 install: ${TARGET}
-	@rm /usr/local/bin/${TARGET}
-	@cp ${TARGET} /usr/local/bin/${TARGET}
+	echo "install"
+	rm -f /usr/local/bin/${TARGET}
+	cp ${TARGET} /usr/local/bin/${TARGET}
 
-MAKEFLAGS += --no-print-directory
-.PHONY: clean run all commit install
+commit:
+	echo "commit"
+	git add .
+	git commit -m "AUTO COMMIT: `date +'%Y-%m-%d %H:%M:%S'`"
+	git push origin main
 
+.PHONY: all clean run install commit
 
